@@ -8,10 +8,13 @@ namespace HealthBars.Scripts {
             { ObjectID.CrystalBigSnail, new Vector3(0f, 0f, -0.75f) },
             { ObjectID.SnarePlant, new Vector3(0f, 0f, -0.35f) },
             { ObjectID.SmallTentacle, new Vector3(0f, 0f, -0.25f) },
+            { ObjectID.SmallTentacle, new Vector3(0f, 0f, -0.275f) },
             { ObjectID.CrystalMerchant, new Vector3(0f, 0f, 0.2f) },
-            { ObjectID.BombScarab, new Vector3(0f, 0f, 0.2f) },
-            { ObjectID.LavaButterfly, new Vector3(0f, 0f, 0.25f) },
-            { ObjectID.Larva, new Vector3(0f, 0f, -0.3f) }
+            { ObjectID.BombScarab, new Vector3(0f, 0f, 0.26f) },
+            { ObjectID.LavaButterfly, new Vector3(0f, 0f, 0.45f) },
+            { ObjectID.Larva, new Vector3(0f, 0f, -0.3f) },
+            { ObjectID.CrabEnemy, new Vector3(0f, 0f, 0.15f) },
+            { ObjectID.OrbitalTurret, new Vector3(0f, 0f, 0.1f) }
         };
 
         public static bool ShouldShowHealthBar(EntityMonoBehaviour entity) {
