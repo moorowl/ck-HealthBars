@@ -6,13 +6,13 @@ namespace HealthBars.Scripts.Patches {
         [HarmonyPatch(typeof(EntityMonoBehaviour), "UpdateHealthBar")]
         [HarmonyPrefix]
         public static void PrefixUpdateHealthBar(EntityMonoBehaviour __instance) {
-            if (__instance.optionalHealthBar == null && EnemyHealthBar.ShouldShowHealthBar(__instance)) {
+            if (__instance.optionalHealthBar == null && EnemyHealthBar.HasHealthBar(__instance)) {
                 var healthBar = Manager.memory.GetFreeComponent<EnemyHealthBar>(true, true);
                 if (healthBar == null)
                     return;
 
                 healthBar.transform.SetParent(__instance.transform, false);
-                healthBar.transform.localPosition = EnemyHealthBar.GetHealthBarOffset(__instance);
+                healthBar.transform.localPosition = Options.GetHealthBarOffset(__instance.objectData.objectID);
                 healthBar.OnOccupied();
 
                 __instance.optionalHealthBar = healthBar;

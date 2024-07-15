@@ -9,7 +9,7 @@ namespace HealthBars.Scripts.Patches {
             if (__instance is not EnemyHealthBar healthBar)
                 return true;
 
-            healthBar.UpdateVisuals(value);
+            healthBar.UpdateState(__instance.GetComponentInParent<EntityMonoBehaviour>());
 
             return false;
         }

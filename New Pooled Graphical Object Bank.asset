@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   poolablePlatformScaling: []
   poolInitializers:
-  - prefab: {fileID: 6844820505555205573, guid: 8a71d420a31592e43ba1783812acc40a,
+  - prefab: {fileID: 6844820505555205573, guid: eca60bc6e4e604d45a844b7d8b9a5ec6,
       type: 3}
     initialSize: 16
     maxSize: 2048
