@@ -63,7 +63,7 @@ namespace HealthBars.Scripts {
                 targetOpacity = Options.BarOpacity;
 
             var newOpacity = 0f;
-            if (!Manager.prefs.hideInGameUI) {
+            if (!Manager.prefs.hideInGameUI && !Manager.main.player.guestMode) {
                 newOpacity = math.lerp(Opacity, targetOpacity, 25f * Time.deltaTime);
 
                 if (math.abs(targetOpacity - newOpacity) < 0.05f)
