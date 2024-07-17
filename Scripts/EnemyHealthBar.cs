@@ -59,8 +59,8 @@ namespace HealthBars.Scripts {
 
         private void UpdateOpacity(float healthRatio, float oldHealthRatio) {
             var targetOpacity = 0f;
-            if ((healthRatio > 0f && healthRatio < 1f) || (Options.AlwaysShowBar && healthRatio >= 1f))
-                targetOpacity = Options.BarOpacity;
+            if ((healthRatio > 0f && healthRatio < 1f) || (Options.AlwaysShow && healthRatio >= 1f))
+                targetOpacity = Options.Opacity;
 
             var newOpacity = 0f;
             if (!Manager.prefs.hideInGameUI && !Manager.main.player.guestMode) {
