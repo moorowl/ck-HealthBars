@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace HealthBars.Scripts {
     public class Main : IMod {
-        public const string Version = "1.0.2";
+        public const string Version = "1.0.3";
         public const string InternalName = "HealthBars";
 
         internal static GameObject HealthBarPrefab { get; private set; }
