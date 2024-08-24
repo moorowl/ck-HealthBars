@@ -11,7 +11,6 @@ namespace HealthBars.Scripts.Patches {
             if (__instance.poolablePrefabBanks == null)
                 return;
 
-            Debug.Log($"HealthBarPrefab: {Main.HealthBarPrefab}");
             var prefabBank = ScriptableObject.CreateInstance<PooledGraphicalObjectBank>();
 
             prefabBank.poolablePlatformScaling = new List<PoolablePrefabBank.PlatformObjectPoolScaling>();
@@ -20,7 +19,7 @@ namespace HealthBars.Scripts.Patches {
                     prefab = Main.HealthBarPrefab,
                     initialSize = 8,
                     maxSize = 1024,
-                    maxFreeSize = 1024,
+                    maxFreeSize = 1024
                 }
             };
 
