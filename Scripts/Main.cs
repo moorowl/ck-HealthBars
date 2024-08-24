@@ -1,5 +1,4 @@
 using PugMod;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace HealthBars.Scripts {
@@ -7,7 +6,7 @@ namespace HealthBars.Scripts {
         public const string Version = "1.0.2";
         public const string InternalName = "HealthBars";
 
-        internal static List<PoolablePrefabBank> PoolablePrefabBanks = new();
+        internal static GameObject HealthBarPrefab { get; private set; }
 
         public void EarlyInit() {
             Debug.Log($"[{InternalName}]: Mod version: {Version}");
@@ -20,8 +19,8 @@ namespace HealthBars.Scripts {
         public void Shutdown() { }
 
         public void ModObjectLoaded(Object obj) {
-            if (obj is PoolablePrefabBank bank)
-                PoolablePrefabBanks.Add(bank);
+            if (obj.name == "HealthBar")
+                HealthBarPrefab = (GameObject) obj;
         }
 
         public void Update() { }

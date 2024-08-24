@@ -1,4 +1,6 @@
 using HarmonyLib;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace HealthBars.Scripts.Patches {
     [HarmonyPatch]
@@ -9,7 +11,20 @@ namespace HealthBars.Scripts.Patches {
             if (__instance.poolablePrefabBanks == null)
                 return;
 
-            __instance.poolablePrefabBanks.AddRange(Main.PoolablePrefabBanks);
+            Debug.Log($"HealthBarPrefab: {Main.HealthBarPrefab}");
+            var prefabBank = ScriptableObject.CreateInstance<PooledGraphicalObjectBank>();
+
+            prefabBank.poolablePlatformScaling = new List<PoolablePrefabBank.PlatformObjectPoolScaling>();
+            prefabBank.poolInitializers = new List<PoolablePrefabBank.PoolablePrefab> {
+                new PoolablePrefabBank.PoolablePrefab {
+                    prefab = Main.HealthBarPrefab,
+                    initialSize = 8,
+                    maxSize = 1024,
+                    maxFreeSize = 1024,
+                }
+            };
+
+            __instance.poolablePrefabBanks.Add(prefabBank);
         }
     }
 }

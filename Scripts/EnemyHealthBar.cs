@@ -1,17 +1,24 @@
-﻿using Unity.Mathematics;
-using UnityEngine;
+﻿using UnityEngine;
+using Unity.Mathematics;
 
 namespace HealthBars.Scripts {
     public class EnemyHealthBar : HealthBar, IPoolable {
         public static bool HasHealthBar(EntityMonoBehaviour entity) {
-            return (entity.objectInfo.objectType == ObjectType.Creature || (entity.objectInfo.objectType == ObjectType.PlayerType && entity != Manager.main.player)) && entity.GetMaxHealth() > 1;
+            return entity.entityExist && (entity.objectInfo.objectType == ObjectType.Creature || (entity.objectInfo.objectType == ObjectType.PlayerType && entity != Manager.main.player)) && entity.GetMaxHealth() > 1;
         }
+
+        private EntityMonoBehaviour _lastAssignedEntity;
+
+        public float opacityLerpSpeed;
+        public float largeHitThreshold;
+        public float largeHitLerpSpeed;
+        public float healingLerpSpeed;
 
         public float Opacity {
             get => background.color.a;
             set {
                 background.color = background.color.ColorWithNewAlpha(value);
-                bar.color = bar.color.ColorWithNewAlpha(value);
+                bar.color = healthColor.ColorWithNewAlpha(value);
             }
         }
         public float Progress {
@@ -21,56 +28,52 @@ namespace HealthBars.Scripts {
             }
         }
 
-        private EntityMonoBehaviour _lastAssignedEntity;
-
-        public void UpdateState(EntityMonoBehaviour entity) {
-            if (entity == null)
+        public void UpdateState() {
+            var assignedEntity = gameObject.GetComponentInParent<EntityMonoBehaviour>();
+            if (assignedEntity == null || !assignedEntity.entityExist)
                 return;
-            if (_lastAssignedEntity != entity)
+
+            var healthRatio = GetNormalizedHealth(assignedEntity);
+
+            // Update opacity
+            if (_lastAssignedEntity != assignedEntity)
                 Opacity = 0f;
 
-            var healthRatio = GetNormalizedHealth(entity);
-            var oldHealthRatio = Progress;
-
-            UpdateProgress(healthRatio, oldHealthRatio, _lastAssignedEntity == entity);
-            UpdateOpacity(healthRatio, oldHealthRatio);
-
-            _lastAssignedEntity = entity;
-            root.SetActive(Opacity > 0f);
-        }
-
-        private void UpdateProgress(float healthRatio, float oldHealthRatio, bool allowLerp) {
-            const float LargeHitThreshold = 0.1f;
-            const float LargeHitLerpSpeed = 15f;
-            const float HealingLerpSpeed = 5f;
-
-            var lerpSpeed = 0f;
-            if (allowLerp) {
-                if (healthRatio > oldHealthRatio)
-                    lerpSpeed = HealingLerpSpeed;
-                if (oldHealthRatio - healthRatio >= LargeHitThreshold)
-                    lerpSpeed = LargeHitLerpSpeed;
-            }
-
-            Progress = lerpSpeed > 0f ? math.lerp(oldHealthRatio, healthRatio, lerpSpeed * Time.deltaTime) : healthRatio;
-            if (math.abs(healthRatio - Progress) < 0.01f)
-                Progress = healthRatio;
-        }
-
-        private void UpdateOpacity(float healthRatio, float oldHealthRatio) {
             var targetOpacity = 0f;
             if ((healthRatio > 0f && healthRatio < 1f) || (Options.AlwaysShow && healthRatio >= 1f))
                 targetOpacity = Options.Opacity;
 
             var newOpacity = 0f;
             if (!Manager.prefs.hideInGameUI && !Manager.main.player.guestMode) {
-                newOpacity = math.lerp(Opacity, targetOpacity, 25f * Time.deltaTime);
+                newOpacity = math.lerp(Opacity, targetOpacity, opacityLerpSpeed * Time.deltaTime);
 
                 if (math.abs(targetOpacity - newOpacity) < 0.05f)
                     newOpacity = targetOpacity;
             }
 
+            root.SetActive(newOpacity > 0f);
             Opacity = newOpacity;
+
+            // Update progress
+            Progress = UpdateProgress(Progress, healthRatio, _lastAssignedEntity == assignedEntity);
+
+            _lastAssignedEntity = assignedEntity;
+        }
+
+        private float UpdateProgress(float oldRatio, float newRatio, bool allowLerp) {
+            var lerpSpeed = 0f;
+            if (allowLerp) {
+                if (newRatio > oldRatio)
+                    lerpSpeed = healingLerpSpeed;
+                if (oldRatio - newRatio >= largeHitThreshold)
+                    lerpSpeed = largeHitLerpSpeed;
+            }
+
+            var progress = lerpSpeed > 0f ? math.lerp(oldRatio, newRatio, lerpSpeed * Time.deltaTime) : newRatio;
+            if (math.abs(newRatio - progress) < 0.01f)
+                progress = newRatio;
+
+            return progress;
         }
 
         private static float GetNormalizedHealth(EntityMonoBehaviour entity) {
@@ -78,13 +81,23 @@ namespace HealthBars.Scripts {
             var conditionEffectValues = EntityUtility.GetConditionEffectValues(entity.entity, entity.world);
 
             var currentHealth = healthData.health;
-            var maxHealth = healthData.GetMaxHealthWithConditions(entity.entity, conditionEffectValues);
+            var maxHealth = healthData.GetMaxHealthWithConditions(conditionEffectValues);
 
             // Cocoons
             if (EntityUtility.HasComponentData<HatchWhenPlayerNearbyStateCD>(entity.entity, entity.world) && currentHealth == 1)
                 return 0f;
 
-            return math.clamp(1f - (float) (maxHealth - currentHealth) / maxHealth, 0f, 1f);
+            return math.clamp(1f - (float)(maxHealth - currentHealth) / maxHealth, 0f, 1f);
+        }
+
+        private void OnValidate() {
+            var barSize = new Vector2(barWidth * 0.0625f, 0.125f);
+            if (autoSizeBar && bar != null && bar.size != barSize) {
+                bar.size = barSize;
+                background.size = new Vector2(barWidth * 0.0625f + 0.125f, 0.25f);
+                healthBarMaskPivot.transform.localPosition = new Vector3((0f - barWidth) * 0.0625f * 0.5f, 0f, 0f);
+                bar.transform.localPosition = new Vector3(barWidth * 0.0625f * 0.5f, 0f, 0f);
+            }
         }
 
         #region Pooling stuff
