@@ -4,7 +4,10 @@ using Unity.Mathematics;
 namespace HealthBars.Scripts {
     public class EnemyHealthBar : HealthBar, IPoolable {
         public static bool HasHealthBar(EntityMonoBehaviour entity) {
-            return entity.entityExist && (entity.objectInfo.objectType == ObjectType.Creature || (entity.objectInfo.objectType == ObjectType.PlayerType && entity != Manager.main.player)) && entity.GetMaxHealth() > 1;
+            return entity.entityExist
+                && (entity.objectInfo.objectType == ObjectType.Creature || (entity.objectInfo.objectType == ObjectType.PlayerType && entity != Manager.main.player))
+                && entity is not WormSegment
+                && entity.GetMaxHealth() > 1;
         }
 
         private EntityMonoBehaviour _lastAssignedEntity;
@@ -18,7 +21,7 @@ namespace HealthBars.Scripts {
             get => background.color.a;
             set {
                 background.color = background.color.ColorWithNewAlpha(value);
-                bar.color = healthColor.ColorWithNewAlpha(value);
+                bar.color = Options.Color.ColorWithNewAlpha(value);
             }
         }
         public float Progress {
