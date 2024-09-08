@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using UnityEngine;
 
 namespace HealthBars.Scripts.Patches {
     [HarmonyPatch]
@@ -13,6 +14,8 @@ namespace HealthBars.Scripts.Patches {
 
                 healthBar.transform.SetParent(__instance.transform, false);
                 healthBar.transform.localPosition = Options.GetHealthBarOffset(__instance.objectData.objectID);
+                healthBar.transform.localScale = Vector3.one;
+                healthBar.transform.localRotation = Quaternion.identity;
                 healthBar.OnOccupied();
 
                 __instance.optionalHealthBar = healthBar;
