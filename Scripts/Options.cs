@@ -15,8 +15,10 @@ namespace HealthBars.Scripts {
             { ObjectID.LavaButterfly, new Vector3(0f, 0f, 0.45f) },
             { ObjectID.Larva, new Vector3(0f, 0f, -0.3f) },
             { ObjectID.CrabEnemy, new Vector3(0f, 0f, 0.15f) },
-            { ObjectID.OrbitalTurret, new Vector3(0f, 0f, 0.1f) }
+            { ObjectID.OrbitalTurret, new Vector3(0f, 0f, 0.1f) },
+            { ObjectID.OctopusTentacle, new Vector3(0.4f, 0f, 0.1f) }
         };
+
         private const string DefaultColor = "#db412f";
 
         public static float Opacity { get; private set; }
