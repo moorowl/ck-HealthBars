@@ -25,11 +25,13 @@ namespace HealthBars.Scripts {
         public static float Opacity { get; private set; }
         public static bool AlwaysShow { get; private set; }
         public static Color Color { get; private set; }
+        public static bool RenderOverObjects { get; private set; }
 
         public static void Init() {
             Opacity = math.clamp(RegisterAndGet("Opacity", "Opacity of health bars.", 0.4f), 0.1f, 1f);
             AlwaysShow = RegisterAndGet("AlwaysShow", "If set to true, shows health bars at full health.", false);
             Color = ParseHexColor(RegisterAndGet("Color", "Color of health bars.", "#db412f")) ?? ParseHexColor(DefaultColor).Value;
+            RenderOverObjects = RegisterAndGet("RenderOverObjects", "Renders health bars in front of objects.", false);
         }
 
         private static T RegisterAndGet<T>(string key, string description, T defaultValue = default) {

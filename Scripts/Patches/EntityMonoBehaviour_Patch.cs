@@ -13,7 +13,7 @@ namespace HealthBars.Scripts.Patches {
                     return;
 
                 healthBar.transform.SetParent(__instance.transform, false);
-                healthBar.transform.localPosition = Options.GetHealthBarOffset(__instance.objectData.objectID);
+                healthBar.transform.localPosition = Options.GetHealthBarOffset(__instance.objectData.objectID) + (Options.RenderOverObjects ? new Vector3(0f, 0.6f, -0.6f) : Vector3.zero);
                 healthBar.transform.localScale = Vector3.one;
                 healthBar.transform.localRotation = Quaternion.identity;
                 healthBar.OnOccupied();
