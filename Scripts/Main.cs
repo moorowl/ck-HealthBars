@@ -1,9 +1,9 @@
-using PugMod;
+﻿using PugMod;
 using UnityEngine;
 
 namespace HealthBars.Scripts {
     public class Main : IMod {
-        public const string Version = "1.1.1";
+        public const string Version = "1.2";
         public const string InternalName = "HealthBars";
 
         internal static GameObject HealthBarPrefab { get; private set; }
