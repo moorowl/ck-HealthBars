@@ -1,59 +1,83 @@
-﻿using PugMod;
-using System.Collections.Generic;
+﻿using System;
+using PugMod;
 using System.Globalization;
+using HealthBars.Scripts.Bars;
 using Unity.Mathematics;
 using UnityEngine;
 
 namespace HealthBars.Scripts {
     public static class Options {
-        private static readonly Dictionary<ObjectID, Vector3> _HealthBarOffsets = new() {
-            { ObjectID.CrystalBigSnail, new Vector3(0f, 0f, -0.75f) },
-            { ObjectID.SnarePlant, new Vector3(0f, 0f, -0.35f) },
-            { ObjectID.SmallTentacle, new Vector3(0f, 0f, -0.275f) },
-            { ObjectID.MoldTentacle, new Vector3(0f, 0f, -0.45f) },
-            { ObjectID.CrystalMerchant, new Vector3(0f, 0f, 0.2f) },
-            { ObjectID.BombScarab, new Vector3(0f, 0f, 0.26f) },
-            { ObjectID.LavaButterfly, new Vector3(0f, 0f, 0.45f) },
-            { ObjectID.Larva, new Vector3(0f, 0f, -0.3f) },
-            { ObjectID.CrabEnemy, new Vector3(0f, 0f, 0.15f) },
-            { ObjectID.OrbitalTurret, new Vector3(0f, 0f, 0.1f) },
-            { ObjectID.OctopusTentacle, new Vector3(0.4f, 0f, 0.1f) }
-        };
-
-        private const string DefaultColor = "#db412f";
+        private const string DefaultHealthColor = "#ff3d3d";
+        private const string DefaultShieldColor = "#008eff";
+        private const string DefaultManaColor = DefaultShieldColor;
+        private const string DefaultDurationColor = DefaultShieldColor;
+        private const string DefaultProgressBarColor = DefaultShieldColor;
 
         public static float Opacity { get; private set; }
-        public static bool AlwaysShow { get; private set; }
-        public static Color Color { get; private set; }
-        public static bool RenderOverObjects { get; private set; }
+
+        public static bool ShowHealth { get; private set; }
+        public static bool ShowPlayerHealth { get; private set; }
+        public static bool ShowPlayerMana { get; private set; }
+        public static bool ShowMinionDuration { get; private set; }
+        public static bool ShowOreBoulderProgress { get; private set; }
+        public static bool ShowOnLocalPlayer { get; private set; }
+        
+        public static Color ColorHealth { get; private set; }
+        public static Color ColorShield { get; private set; }
+        public static Color ColorMana { get; private set; }
+        public static Color ColorDuration { get; private set; }
+        public static Color ColorProgressBar { get; private set; }
 
         public static void Init() {
-            Opacity = math.clamp(RegisterAndGet("Opacity", "Opacity of health bars.", 0.4f), 0.1f, 1f);
-            AlwaysShow = RegisterAndGet("AlwaysShow", "If set to true, shows health bars at full health.", false);
-            Color = ParseHexColor(RegisterAndGet("Color", "Color of health bars.", "#db412f")) ?? ParseHexColor(DefaultColor).Value;
-            RenderOverObjects = RegisterAndGet("RenderOverObjects", "Renders health bars in front of objects.", false);
+            // General section
+            var version = RegisterAndGet("General", "Version", "Config version.", 0);
+            
+            Opacity = RegisterAndGet("General", "Opacity", "The opacity of health bars.", 0.4f, value => {
+                return math.clamp(value, 0.1f, 1f);
+            });
+            
+            ShowHealth = RegisterAndGet("General", "ShowHealth", "Enables health bars on enemies/cattle/merchants/some objects.", true);
+            ShowPlayerHealth = RegisterAndGet("General", "ShowPlayerHealth", "Enables health bars on players.", true);
+            ShowPlayerMana = RegisterAndGet("General", "ShowPlayerMana", "Enables mana bars on players. ShowPlayerHealth must also be enabled.", true);
+            ShowOnLocalPlayer = RegisterAndGet("General", "ShowOnLocalPlayer", "Enables health and mana bars on the local player (if their respective options are also enabled).", false);
+            ShowMinionDuration = RegisterAndGet("General", "ShowMinionDuration", "Enables duration bars for minions.", false);
+            // ShowOreBoulderProgress = RegisterAndGet("General", "ShowOreBoulderProgress", "Enables progress bars for ore boulders.", true);
+            
+            // Colors section
+            ColorHealth = RegisterAndGet("Colors", "Health", "Fill color of health bars.", DefaultHealthColor, value => {
+                return Utils.ParseHexColor(value) ?? Utils.ParseHexColor(DefaultHealthColor).Value;
+            });
+            ColorShield = RegisterAndGet("Colors", "Shield", "Fill color of shield bars (Crystal Snail).", DefaultShieldColor, value => {
+                return Utils.ParseHexColor(value) ?? Utils.ParseHexColor(DefaultShieldColor).Value;
+            });
+            ColorMana = RegisterAndGet("Colors", "Mana", "Fill color of a player's mana bar.", DefaultManaColor, value => {
+                return Utils.ParseHexColor(value) ?? Utils.ParseHexColor(DefaultManaColor).Value;
+            });
+            ColorDuration = RegisterAndGet("Colors", "Duration", "Fill color of minion duration bars.", DefaultDurationColor, value => {
+                return Utils.ParseHexColor(value) ?? Utils.ParseHexColor(DefaultDurationColor).Value;
+            });
+            /*ColorProgressBar = RegisterAndGet("Colors", "ProgressBar", "Fill color of progress bars (ore boulders).", DefaultProgressBarColor, value => {
+                return Utils.ParseHexColor(value) ?? Utils.ParseHexColor(DefaultProgressBarColor).Value;
+            });*/
         }
 
-        private static T RegisterAndGet<T>(string key, string description, T defaultValue = default) {
-            return API.Config.Register(Main.InternalName, "Config", description, key, defaultValue).Value;
+        private static T RegisterAndGet<T>(string section, string key, string description, T defaultValue) {
+            return API.Config.Register(Main.InternalName, section, description, key, defaultValue).Value;
+        }
+        
+        private static TValue RegisterAndGet<T, TValue>(string section, string key, string description, T defaultValue, Func<T, TValue> parser) {
+            return parser(RegisterAndGet(section, key, description, defaultValue));
         }
 
-        public static Vector3 GetHealthBarOffset(ObjectID objectId) {
-            return _HealthBarOffsets.GetValueOrDefault(objectId);
-        }
-
-        private static Color? ParseHexColor(string hexColor) {
-            if (string.IsNullOrEmpty(hexColor) || hexColor.Length < 7)
-                return null;
-
-            hexColor = hexColor.Replace("#", "");
-
-            return new Color(
-                byte.Parse(hexColor.Substring(0, 2), NumberStyles.HexNumber) / 255f,
-                byte.Parse(hexColor.Substring(2, 2), NumberStyles.HexNumber) / 255f,
-                byte.Parse(hexColor.Substring(4, 2), NumberStyles.HexNumber) / 255f,
-                1f
-            );
+        public static bool ShouldShowResourceBar(ResourceBarType type) {
+            return type switch {
+                ResourceBarType.HealthAndArmor => ShowHealth,
+                ResourceBarType.Player => ShowPlayerHealth,
+                ResourceBarType.CrystalSnail => ShowHealth,
+                ResourceBarType.OreBoulder => ShowOreBoulderProgress,
+                ResourceBarType.MinionDuration => ShowMinionDuration,
+                _ => throw new NotImplementedException()
+            };
         }
     }
 }
