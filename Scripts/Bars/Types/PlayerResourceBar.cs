@@ -38,7 +38,7 @@ namespace HealthBars.Scripts.Bars.Types {
                 return;
 
             progress = mana;
-            visible = PugDatabase.HasComponent<ConsumesManaCD>(playerController.GetEquippedSlot().objectData.objectID) && progress < 1f;
+            visible = PugDatabase.HasComponent<ConsumesManaCD>(playerController.GetHeldObject().objectID) && progress < 1f;
         }
     }
 }
