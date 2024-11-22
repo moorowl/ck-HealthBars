@@ -24,9 +24,7 @@ namespace HealthBars.Scripts.Bars.Assignment {
             if (barType == null || !Options.ShouldShowResourceBar(barType.Value))
                 return;
             
-            AddComponentData(new HasResourceBarCD {
-                Type = barType.Value
-            });
+            Utils.ObjectBarTypes[objectInfo.objectID] = barType.Value;
         }
 
         private static ResourceBarType? GetResourceBarType(GameObject authoring, EntityMonoBehaviour entityMono, ObjectInfo objectInfo) {

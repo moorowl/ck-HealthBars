@@ -10,6 +10,8 @@ using UnityEngine;
 
 namespace HealthBars.Scripts {
     public static class Utils {
+        internal static readonly Dictionary<ObjectID, ResourceBarType> ObjectBarTypes = new();
+        
         private static readonly Dictionary<ResourceBarType, Type> BarTypeToType = new();
         private static readonly Dictionary<ObjectID, Vector3> BarOffsets = new() {
             { ObjectID.CrystalBigSnail, new Vector3(0f, 0f, -0.75f) },
@@ -42,6 +44,10 @@ namespace HealthBars.Scripts {
         public static Component GetFreeResourceBarComponent(ResourceBarType type) {
             return Manager.memory.GetFreeComponent(BarTypeToType[type], true, true);
         }
+
+        public static bool TryGetResourceBarType(ObjectID id, out ResourceBarType type) {
+            return ObjectBarTypes.TryGetValue(id, out type);
+        }
         
         public static Vector3 GetBottom(EntityMonoBehaviour entityMono) {
             var bottom = entityMono.RenderPosition;
@@ -58,16 +64,17 @@ namespace HealthBars.Scripts {
         }
         
         public static void AssignResourceBar(Entity entity, EntityManager manager, GameObject graphicalObject) {
-            if (graphicalObject == null || !manager.HasComponent<HasResourceBarCD>(entity) || !manager.HasComponent<ObjectDataCD>(entity))
+            if (graphicalObject == null || !manager.HasComponent<ObjectDataCD>(entity))
+                return;
+            
+            var objectData = manager.GetComponentData<ObjectDataCD>(entity);
+            if (!TryGetResourceBarType(objectData.objectID, out ResourceBarType barType))
                 return;
                 
             var entityMono = graphicalObject.GetComponent<EntityMonoBehaviour>();
             if (entityMono != null && entityMono.optionalHealthBar != null)
                 return;
-                
-            var objectData = manager.GetComponentData<ObjectDataCD>(entity);
-            var barType = manager.GetComponentData<HasResourceBarCD>(entity).Type;
-                
+            
             var barHandler = graphicalObject.GetComponent<ResourceBarHandler>();
             if (barHandler == null)
                 barHandler = graphicalObject.AddComponent<ResourceBarHandler>();
