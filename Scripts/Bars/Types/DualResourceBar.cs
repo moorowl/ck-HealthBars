@@ -115,7 +115,7 @@ namespace HealthBars.Scripts.Bars.Types {
         }
         
         private float UpdateOpacity(float currentOpacity, float targetOpacity) {
-            if (Manager.prefs.hideInGameUI || Manager.main.player.guestMode)
+            if (Manager.prefs.hideInGameUI || (Manager.main.player != null && Manager.main.player.guestMode))
                 return 0f;
             
             var newOpacity = math.lerp(currentOpacity, targetOpacity, opacityLerpSpeed * Time.deltaTime);
