@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2990632553020791005}
   - component: {fileID: 852626042456860007}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: secondaryBarBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -127,7 +127,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1415978095260489042}
   - component: {fileID: 2806749644074860605}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: primaryBarBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -211,7 +211,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8506097428936797077}
-  m_Layer: 31
+  m_Layer: 0
   m_Name: primaryBarMaskPivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -276,7 +276,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3360037537604715738}
   - component: {fileID: 1086317087718670557}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: primaryBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -359,7 +359,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4611348497993519043}
-  m_Layer: 31
+  m_Layer: 0
   m_Name: secondaryBarMaskPivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -392,7 +392,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6528395785536850087}
   - component: {fileID: 731134065983411788}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: secondaryBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}

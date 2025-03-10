@@ -20,6 +20,8 @@ namespace HealthBars.Scripts {
             { ObjectID.MoldTentacle, new Vector3(0f, 0f, -0.45f) },
             { ObjectID.CrystalMerchant, new Vector3(0f, 0f, 0.2f) },
             { ObjectID.BombScarab, new Vector3(0f, 0f, 0.1f) },
+            { ObjectID.GoldenBombScarab, new Vector3(0f, 0f, 0.1f) },
+            { ObjectID.CicadaNymph, new Vector3(0f, 0f, -0.1f) },
             { ObjectID.LavaButterfly, new Vector3(0f, 0f, 0.45f) },
             { ObjectID.Larva, new Vector3(0f, 0f, -0.3f) },
             { ObjectID.CrabEnemy, new Vector3(0f, 0f, 0.15f) },
@@ -89,7 +91,7 @@ namespace HealthBars.Scripts {
 
             barHandler.bar = barInstance;
             barInstance.transform.SetParent(graphicalObject.transform, false);
-            var offset = GetBottom(entityMono) - entityMono.RenderPosition + BarOffsets.GetValueOrDefault(objectData.objectID) + new Vector3(0f, 1.6f, -1.6f);
+            var offset = GetBottom(entityMono) - entityMono.RenderPosition + BarOffsets.GetValueOrDefault(objectData.objectID) + new Vector3(0f, 1.625f, -1.625f);
             barInstance.transform.localPosition = offset;
             barInstance.transform.localScale = Vector3.one;
             barInstance.transform.localRotation = Quaternion.identity;

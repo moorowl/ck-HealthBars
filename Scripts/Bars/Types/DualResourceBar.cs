@@ -15,7 +15,7 @@ namespace HealthBars.Scripts.Bars.Types {
         public GameObject secondaryBarMaskPivot;
         public SpriteRenderer secondaryBar;
         public SpriteRenderer secondaryBarBackground;
-        public float barWidth = 20f;
+        public int barWidth = 20;
 
         public bool lerpLargeHits = true;
         [ShowIf("lerpLargeHits")]
@@ -126,16 +126,17 @@ namespace HealthBars.Scripts.Bars.Types {
         }
         
         private void OnValidate() {
-            var scale = new Vector2(barWidth * 0.0625f, 0.125f);
+            var scale = new Vector2(barWidth / 16f, 2f / 16f);
             if (primaryBar == null || primaryBar.size == scale)
                 return;
             
             primaryBar.size = scale;
-            primaryBarBackground.size = new Vector2(barWidth * 0.0625f + 0.125f, 0.25f);
+            primaryBarBackground.size = new Vector2(scale.x + (2f / 16f), scale.y + (2f / 16f));
             primaryBarMaskPivot.transform.localPosition = new Vector3((0f - barWidth) * 0.0625f * 0.5f, 0f, 0f);
             primaryBar.transform.localPosition = new Vector3(barWidth * 0.0625f * 0.5f, 0f, 0f);
+            
             secondaryBar.size = scale;
-            secondaryBarBackground.size = new Vector2(barWidth * 0.0625f + 0.125f, 0.25f);
+            secondaryBarBackground.size = new Vector2(scale.x + (2f / 16f), scale.y + (2f / 16f));
             secondaryBarMaskPivot.transform.localPosition = secondaryBarMaskPivot.transform.localPosition;
             secondaryBar.transform.localPosition = new Vector3(Mathf.Abs(secondaryBarMaskPivot.transform.localPosition.x), 0f, 0f);
         }

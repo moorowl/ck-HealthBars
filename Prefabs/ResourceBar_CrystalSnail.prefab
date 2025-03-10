@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2990632553020791005}
   - component: {fileID: 852626042456860007}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: secondaryBarBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79,7 +79,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 1
-  m_Size: {x: 1.21875, y: 0.25}
+  m_Size: {x: 1.125, y: 0.25}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -127,7 +127,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1415978095260489042}
   - component: {fileID: 2806749644074860605}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: primaryBarBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -196,7 +196,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 1
-  m_Size: {x: 1.21875, y: 0.25}
+  m_Size: {x: 1.125, y: 0.25}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -211,7 +211,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8506097428936797077}
-  m_Layer: 31
+  m_Layer: 0
   m_Name: primaryBarMaskPivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -227,7 +227,7 @@ Transform:
   m_GameObject: {fileID: 2468405766989978156}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.546875, y: 0, z: 0}
+  m_LocalPosition: {x: -0.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -276,7 +276,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3360037537604715738}
   - component: {fileID: 1086317087718670557}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: primaryBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -292,7 +292,7 @@ Transform:
   m_GameObject: {fileID: 4946044402949572073}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.546875, y: 0, z: 0}
+  m_LocalPosition: {x: 0.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -344,7 +344,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 1
-  m_Size: {x: 1.09375, y: 0.125}
+  m_Size: {x: 1, y: 0.125}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -359,7 +359,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4611348497993519043}
-  m_Layer: 31
+  m_Layer: 0
   m_Name: secondaryBarMaskPivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -392,7 +392,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6528395785536850087}
   - component: {fileID: 731134065983411788}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: secondaryBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -460,7 +460,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 1
-  m_Size: {x: 1.09375, y: 0.125}
+  m_Size: {x: 1, y: 0.125}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -521,7 +521,7 @@ MonoBehaviour:
   secondaryBarMaskPivot: {fileID: 7903643765428969401}
   secondaryBar: {fileID: 731134065983411788}
   secondaryBarBackground: {fileID: 852626042456860007}
-  barWidth: 17.5
+  barWidth: 16
   lerpLargeHits: 1
   largeHitThreshold: 0.1
   largeHitLerpSpeed: 15
