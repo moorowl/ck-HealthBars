@@ -1,4 +1,5 @@
 ﻿using NaughtyAttributes;
+using Pug.UnityExtensions;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;

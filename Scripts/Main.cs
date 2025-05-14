@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace HealthBars.Scripts {
     public class Main : IMod {
-        public const string Version = "1.3.4";
+        public const string Version = "1.3.5";
         public const string InternalName = "HealthBars";
         
         public void EarlyInit() {

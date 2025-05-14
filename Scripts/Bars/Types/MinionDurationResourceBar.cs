@@ -13,7 +13,7 @@ namespace HealthBars.Scripts.Bars.Types {
             if (!EntityUtility.TryGetComponentData<MinionCD>(entity, world, out var minionData))
                 return;
 
-            if (!EntityUtility.TryGetComponentData<OwnerCD>(entity, world, out var ownerData))
+            if (!EntityUtility.TryGetComponentData<OwnerReferenceCD>(entity, world, out var ownerData))
                 return;
 
             if (Manager.memory.GetEntityMono(ownerData.owner) is not PlayerController { isLocal: true } || entityMono.isHidden)

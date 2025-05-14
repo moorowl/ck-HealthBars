@@ -1,4 +1,5 @@
-﻿using Unity.Entities;
+﻿using Pug.UnityExtensions;
+using Unity.Entities;
 using UnityEngine;
 
 namespace HealthBars.Scripts.Bars {
